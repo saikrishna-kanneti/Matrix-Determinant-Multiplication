@@ -1,0 +1,110 @@
+#1. Sorting 
+import numpy as np
+import time
+import matplotlib.pyplot as plt
+% matplotlib inline
+np.random.seed(0)
+time_numpy=[]
+time_normal=[]
+N=[]
+for i in range(1000,25000,1000):
+    B=np.random.random(i)
+    start_t=time.time()
+    C=np.sort(B)
+    end_t=time.time()
+    time_numpy.append(end_t-start_t)
+    N.append(i)
+    s_time=time.time()
+    D=B.sort()
+    e_time=time.time()
+    time_normal.append(e_time-s_time)
+plt.figure(figsize=(11,5))
+plt.xlabel('Matrix Size')
+plt.ylabel('Time Taken')
+plt.title('Time taken to compute sorting using numpy sort vs Normal sorting algorithm')
+plt.plot(N,time_numpy,'-g',label='Numpy sort')
+plt.plot(N,time_normal,':b',label='python Sort')
+plt.legend(['Numpy sort','python Sort'])
+
+# Matrix multiplication
+
+import numpy as np
+import time
+import matplotlib.pyplot as plt
+% matplotlib inline
+np.random.seed(0)
+time_normal=[]
+time_np=[]
+x=[]
+for l in range(100,800,50):
+    A=np.random.randint(10,size=(l,l))
+    #A=np.ones((l,l))
+    P=np.zeros((l,l))
+    s=time.time()
+    for i in range(0,l):
+        for j in range(0,l):
+            s=0
+            for k in range(0,l):
+                s=s+A[i][k]*A[k][j]
+            P[i][j]=s
+    e=time.time()
+    time_normal.append(e-s)
+    x.append(l)
+    s=time.time()
+    Pr=np.multiply(A,A)
+    e=time.time()
+    time_np.append(e-s)
+plt.figure(figsize=(11,5))
+plt.xlabel('Matrix Size')
+plt.ylabel('Time Taken')
+plt.title('Time taken to compute multiplication using numpy vs Normal algorithm')
+plt.plot(x,time_normal,'-g',label='Normal multiplication')
+plt.plot(x,time_np,':b',label='Numpy multiplication')
+plt.legend(['Normal multiplication','Numpy multiplication'])
+
+# 3.Computing the determinant
+import numpy as np
+import time
+import math
+import matplotlib.pyplot as plt
+% matplotlib inline
+np.random.seed(0)
+
+def minor2(A,i,j):
+    A=np.delete(A,(i),axis=0)
+    A=np.delete(A,(j),axis=1)
+    return A
+
+
+def det(A):
+    d=0
+    if A.shape==(2,2):
+        return A[1,1]*A[0,0]-A[0,1]*A[1,0]
+    else:
+        for i in range(A.shape[0]):
+            B=minor2(A,0,i)
+            d+=math.pow(-1,i)*A[0][i]*det(B)
+    return d
+
+
+time_2=[]
+time_1=[]
+N=[]
+for i in range(3,10):
+    B=np.random.randint(10,size=(i,i))
+    start_t=time.time()
+    det(B)
+    end_t=time.time()
+    time_1.append(end_t-start_t)
+    N.append(i)
+    s=time.time()
+    Pr=np.linalg.det(B)
+    e=time.time()
+    time_2.append(e-s)
+plt.figure(figsize=(11,5))
+plt.xlabel('Matrix Size')
+plt.ylabel('Time Taken')
+plt.title('Time taken to compute Determinant using numpy vs Normal algorithm')
+plt.plot(N,time_1,'-g',label='Normal determinant')
+plt.plot(N,time_2,':b',label='Numpy determinant')
+plt.legend(['Normal determinant','Numpy determinant'])
